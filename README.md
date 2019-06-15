@@ -8,7 +8,11 @@ Program podrzava tri akcije:
     python shape.py train 10000 10000 1 
     (trening fajl je vec formiran pod nazivom neuralnet.pkt 
     iz razloga sto treniranje neuronske mreze predugo traje.)
+    
+# Testiranje neuronske mreze komandom:
 
+    python shape.py validate
+    
 # Crtanje oblika:
 
     python shape.py draw

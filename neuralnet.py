@@ -3,7 +3,35 @@ import numpy as np
 import matplotlib.pyplot as plt
 from genetics import Gene
 from nnmath import *
+import itertools
 
+import matplotlib.pyplot as plt
+
+def prikaziMatricuKonfuzije(cm):
+
+    plt.figure()
+    dimenzija = len(cm)
+    plt.imshow(cm, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('Matrica kofuzije')
+    plt.colorbar()
+    plt.xticks(range(dimenzija), range(1, dimenzija+1))
+    plt.yticks(range(dimenzija), range(1, dimenzija+1))
+
+
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j]),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+
+    plt.ylabel('Tacne vrednosti')
+    plt.xlabel('Predvidjene vrednosti')
+    plt.tight_layout()
+
+    plt.show()
+    plt.close()
+    
 class NeuralNet(Gene):
 	errors = []
 	test_accuracies = []
@@ -108,15 +136,25 @@ class NeuralNet(Gene):
 
 
 
+
+
 	def validate(self, targets, test_data):
 		accuracy = 0.0
+		matrica=np.zeros( (3, 3) )
 		for tag, img in test_data:
 			target = map(lambda x: int(x in tag), targets)
 			activations, zs = self.feed_forward(img)
-
+                        matrica[np.argmax(target)][np.argmax(activations[-1])]+=1
+                        
+                        
+                        
+                        
 			if np.argmax(target) == np.argmax(activations[-1]):
+                                
 				accuracy += 1
-
+                prikaziMatricuKonfuzije(matrica)
+                
+                
 		return accuracy/len(test_data)
 
 	def learning_rate(self, i):

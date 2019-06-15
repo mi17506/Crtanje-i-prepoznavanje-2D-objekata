@@ -109,7 +109,20 @@ def main(argv):
 
 		
 		activations, zs = nn.feed_forward(img)
-		print (targets[np.argmax(activations[-1])])
+                probability = max(activations[-1])
+		print ("Shape is: "+targets[np.argmax(activations[-1])] )
+		print ("With probability: ")
+		print ( probability )
+		
+	elif argv[1] == "validate":
+		test_data = read_data('test_data/')
+
+		nn = NeuralNet([], build=False)
+		nn.load("neuralnet.pkt")
+
+		accuracy = nn.validate(targets, test_data)
+		print "Accuracy: " + str(accuracy)
+		
 	elif argv[1] == "draw":
 		#Proveravanje ulaznih argumenata
 
